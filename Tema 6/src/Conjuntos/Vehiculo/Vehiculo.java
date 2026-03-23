@@ -1,13 +1,14 @@
-package Conjuntos;
+package Conjuntos.Vehiculo;
 
 public class Vehiculo {
-    private String matricula;
-    private String nombre;
-    private int numeroPlaza;
+    protected String matricula;
+    protected String nombre;
+    protected int numeroPlaza;
 
     public Vehiculo(String matricula, String nombre) {
         setMatricula(matricula);
         setNombre(nombre);
+        numeroPlaza = 0;
     }
 
     private String getMatricula() {
@@ -34,11 +35,11 @@ public class Vehiculo {
         }
     }
 
-    private int getNumeroPlaza() {
+    protected int getNumeroPlaza() {
         return numeroPlaza;
     }
 
-    private void setNumeroPlaza(int numeroPlaza) {
+    protected void setNumeroPlaza(int numeroPlaza) {
         if (numeroPlaza < 0) {
             throw new IllegalArgumentException("No puede ser menor de 0");
         } else {
