@@ -1,9 +1,6 @@
 package Ficheros.Ejercicio11;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,21 +24,21 @@ public class Libro {
     public String toString() {
         return STR."{id=\{id}, titulo='\{titulo}' por autor='\{autor}' (anyo=\{anyo}) - genero='\{genero}'}";
     }
-    public void leerLibro() {
+    static void leerLibro() {
         List<Libro> lista = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("Tema 7/src/Texto/libros.csv"))){
             String linea;
             String[] partes;
             while ((linea = br.readLine()) != null) {
                 partes = linea.split(";");
-                Libro l1 = new Libro(
+                Libro libro = new Libro(
                         Integer.parseInt(partes[0]),
                         partes[1],
                         partes[2],
                         Integer.parseInt(partes[3]),
                         partes[4]
                 );
-                lista.add(l1);
+                lista.add(libro);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado");
@@ -49,20 +46,90 @@ public class Libro {
             System.out.println("Error de lectura");
         }
     }
-    public void clasificarPorGenero() {
+    static void clasificarPorGenero() {
         try (BufferedReader br = new BufferedReader(new FileReader("Tema 7/src/Texto/libros.csv"))){
             Map<String, Integer> mapa = new HashMap<>();
             String linea;
             String[] partes;
             while ((linea = br.readLine()) != null) {
                 partes = linea.split(";");
-
+                if (!mapa.containsKey(partes[4])) {
+                    mapa.put(partes[4], 1);
+                } else {
+                    mapa.put(partes[4], mapa.get(partes[4]) + 1);
+                }
+            }
+            System.out.println(mapa);
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo no encontrado");
+        } catch (IOException e) {
+            System.out.println("Error de lectura");
+        }
+    }
+    static void clasificarPorEdad() {
+        List<Libro> lista = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("Tema 7/src/Texto/libros.csv"))){
+            String linea;
+            String[] partes;
+            while ((linea = br.readLine()) != null) {
+                partes = linea.split(";");
+                try {
+                    Libro l1 = new Libro(
+                            Integer.parseInt(partes[0]),
+                            partes[1],
+                            partes[2],
+                            Integer.parseInt(partes[3]),
+                            partes[4]
+                    );
+                    lista.add(l1);
+                } catch (IllegalArgumentException e) {
+                    System.out.println(STR."Omitiendo libro '\{partes[1]}': \{e.getMessage()}");
+                }
+            }
+            System.out.println(lista.stream().sorted(java.util.Comparator.comparingInt(Libro::getAnyo)).toList());
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo no encontrado");
+        } catch (IOException e) {
+            System.out.println("Error de lectura");
+        }
+    }
+    static void guardarLibros() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Tema 7/src/Texto/libros_XXI.txt", true));
+        BufferedReader br = new BufferedReader(new FileReader("Tema 7/src/Texto/libros.csv"))) {
+            String linea;
+            String[] partes;
+            while ((linea = br.readLine()) != null) {
+                partes = linea.split(";");
+                try {
+                    bw.write(partes[0]);
+                    bw.write("--");
+                    bw.write(partes[1]);
+                    bw.write("--");
+                    bw.write(partes[2]);
+                    bw.write("--");
+                    bw.write(partes[3]);
+                    bw.write("--");
+                    bw.write(partes[4]);
+                    bw.newLine();
+                } catch (IllegalArgumentException e) {
+                    System.out.println(STR."Omitiendo libro '\{partes[1]}': \{e.getMessage()}");
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado");
         } catch (IOException e) {
             System.out.println("Error de lectura");
         }
+    }
+    static void main() {
+        System.out.println("--- Clasificación por Género ---");
+        clasificarPorGenero();
+
+        System.out.println("\n--- Clasificación por Edad/Año ---");
+        clasificarPorEdad();
+
+        guardarLibros();
+        System.out.println("--- Libros Guardados ---");
     }
     public int getId() {
         return id;
