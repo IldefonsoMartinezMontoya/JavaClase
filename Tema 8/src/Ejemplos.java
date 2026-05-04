@@ -14,6 +14,7 @@ public class Ejemplos extends JFrame {
         //add(new JButton("Botón 4"));
         //add(new JButton("Botón 5"));
         //setVisible(true);
+
         //BorderLayout
         //add(new JButton("PAGE_START"), BorderLayout.PAGE_START);
         //add(new JButton("PAGE_END"), BorderLayout.PAGE_END);
