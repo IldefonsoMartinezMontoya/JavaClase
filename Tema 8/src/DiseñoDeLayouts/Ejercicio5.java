@@ -41,15 +41,21 @@ public class Ejercicio5 extends JFrame{
         panel2.setVisible(true);
 
         JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayout(1, 4));
+        panel3.setPreferredSize(new Dimension(700, 75));
+        panel3.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 25));
 
+        Dimension tamaño = new Dimension(90, 30);
         JButton atras = new JButton("⏮");
+        atras.setPreferredSize(tamaño);
         panel3.add(atras);
         JButton pauseplay = new JButton(" ⏯");
+        pauseplay.setPreferredSize(tamaño);
         panel3.add(pauseplay);
         JButton adelante = new JButton("⏭");
+        adelante.setPreferredSize(tamaño);
         panel3.add(adelante);
         JButton parar = new JButton("⏹");
+        parar.setPreferredSize(tamaño);
         panel3.add(parar);
         add(panel3, BorderLayout.SOUTH);
         panel3.setVisible(true);

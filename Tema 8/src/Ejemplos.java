@@ -7,13 +7,13 @@ public class Ejemplos extends JFrame {
         setSize(480, 240);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //FlowLayout
-        //setLayout(new FlowLayout(FlowLayout.LEFT, 20,//Separacion Horizontal 10 //Vertical));
-        //add(new JButton("Botón 1"));
-        //add(new JButton("Botón 2"));
-        //add(new JButton("Botón 3"));
-        //add(new JButton("Botón 4"));
-        //add(new JButton("Botón 5"));
-        //setVisible(true);
+        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        add(new JButton("Botón 1"));
+        add(new JButton("Botón 2"));
+        add(new JButton("Botón 3"));
+        add(new JButton("Botón 4"));
+        add(new JButton("Botón 5"));
+        setVisible(true);
 
         //BorderLayout
         //add(new JButton("PAGE_START"), BorderLayout.PAGE_START);
