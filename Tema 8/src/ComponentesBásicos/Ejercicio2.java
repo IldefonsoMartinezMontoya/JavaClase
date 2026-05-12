@@ -17,15 +17,22 @@ public class Ejercicio2 extends JFrame {
         Panel1.setBorder(new EmptyBorder(40, 40, 40, 40));
         for (int i = 0; i < 64; i++) {
             JLabel disparables = new JLabel("Dispárame");
-            disparables.setHorizontalAlignment(JLabel.CENTER);
+            disparables.setOpaque(true);
+            disparables.setBackground(Color.LIGHT_GRAY);
+            disparables.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
             disparables.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    Panel1.remove(disparables);
-                    Panel1.revalidate();
+                    Component clicada = (Component) e.getSource();
+                    Panel1.remove(clicada);
                     Panel1.repaint();
+                    if (Panel1.getComponentCount() == 0) {
+                        JOptionPane.showMessageDialog(null, "¡Felicidades! Has destruido todas las etiquetas.");
+                        System.exit(0);
+                    }
                 }
             });
+            Panel1.add(disparables);
         }
         add(Panel1, BorderLayout.CENTER);
         Panel1.setVisible(true);
