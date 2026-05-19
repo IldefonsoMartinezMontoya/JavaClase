@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.runtime.TemplateRuntime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,8 +26,9 @@ public class Ejercicio10 extends JFrame {
         texto.setPreferredSize(new Dimension(texto.getPreferredSize().width, 60));
         paneltexto.add(texto);
         for (int i = 0; i < 90; i++) {
-            JLabel numeros = new JLabel(String.valueOf(i), JLabel.CENTER);
+            JLabel numeros = new JLabel(String.valueOf(i + 1), JLabel.CENTER);
             numeros.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            numeros.setOpaque(true);
             panelnumerico.add(numeros);
             labels.add(numeros);
         }
@@ -37,10 +39,11 @@ public class Ejercicio10 extends JFrame {
                 if (chivata != null) {
                     chivata.setBackground(Color.YELLOW);
                 }
-                int num = r.nextInt(91);
+                int num = r.nextInt(labels.size());
                 JLabel elegida = labels.get(num);
                 elegida.setBackground(Color.RED);
                 chivata = elegida;
+                texto.setText(elegida.getText());
             }
         });
         botones.add(boton);
