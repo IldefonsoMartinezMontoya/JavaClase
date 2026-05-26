@@ -1,7 +1,8 @@
 package Streams;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.sound.sampled.Line;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LineaPedido {
     private int tipoIVA;
@@ -35,12 +36,43 @@ public class LineaPedido {
         ));
         totalBrutoPedido(lineasPedido);
         totalNetoMinUnidades(lineasPedido, 1);
+        totalBrutoPorIVA(lineasPedido);
+        LineaPedido masUnids = maxUnids.obtenerMinUnidades(lineasPedido);
+        int unidadMaxima = maxUnids.obtenerUnidadesMinimas(lineasPedido);
+        if (masUnids != null) {
+            System.out.println(STR."La linea con más unidades es la: \{masUnids.getConcepto()} con \{unidadMaxima} unidades");
+        }
+        totalBrutoPorIVASuperiorAUmbral(lineasPedido, 10);
     }
     public static void totalBrutoPedido(List<LineaPedido> l) {
         System.out.println(STR."Total Bruto de los Pedidos: \{l.stream().mapToInt(LineaPedido -> (int) LineaPedido.precioUnidad).sum()}€");
     }
     public static void totalNetoMinUnidades(List<LineaPedido> l, int minUnidades) {
         System.out.println(STR."Total neto de pedidos con más de \{minUnidades} unidades: \{l.stream().filter(LineaPedido -> LineaPedido.unidades > minUnidades).mapToInt(LineaPedido -> (int) (LineaPedido.precioUnidad * LineaPedido.tipoIVA)).sum()}€");
+    }
+    public static void totalBrutoPorIVA(List<LineaPedido> l) {
+        Map<Integer, Double> resultado = l.stream()
+                .collect(Collectors.groupingBy(
+                        LineaPedido::getTipoIVA,
+                        Collectors.summingDouble(LineaPedido::getPrecioUnidad)
+                ));
+        System.out.println("Total Bruto agrupado por tipo de IVA:");
+        resultado.forEach((iva, total) ->
+                System.out.printf("- IVA %2d%%: %.2f€%n", iva, total)
+        );
+    }
+    public static class maxUnids {
+        public static LineaPedido obtenerMinUnidades(List<LineaPedido> l) {
+            return l.stream().max(Comparator.comparing(LineaPedido::getUnidades)).orElse(null);
+        }
+        public static int obtenerUnidadesMinimas(List<LineaPedido> l) {
+            return l.stream().mapToInt(LineaPedido::getUnidades).max().orElse(0);
+        }
+    }
+    public static void totalBrutoPorIVASuperiorAUmbral(List<LineaPedido> l, int umbral) {
+        Map<Integer, Double> resultado = l.stream().collect(Collectors.groupingBy(LineaPedido::getTipoIVA, Collectors.summingDouble(LineaPedido -> LineaPedido.getPrecioUnidad() * LineaPedido.getUnidades()))
+        ).entrySet().stream().filter(entry -> entry.getValue() > umbral).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        System.out.println(resultado);
     }
     public String getConcepto() {
         return concepto;

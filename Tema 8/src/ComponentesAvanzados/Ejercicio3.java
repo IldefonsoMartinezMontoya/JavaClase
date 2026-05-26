@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Ejercicio3 extends JFrame {
-    private JTextArea texto;
+    private final JTextArea texto;
     public Ejercicio3() {
         setTitle("OreEditor");
         setSize(800, 600);
