@@ -8,13 +8,14 @@ public class HojaCalculoFrame extends JFrame {
     private int numColumnas;
     private char Caracter;
     private int fila;
-
+    private JTextField[][] celdas;
     public HojaCalculoFrame(int numFilas, int numColumnas, char caracter, int fila) throws HeadlessException {
         setNumFilas(numFilas);
         setNumColumnas(numColumnas);
         setCaracter(caracter);
         setFila(fila);
     }
+
     public void Hoja() {
         setTitle("Hoja de Calculo");
         setSize(800, 600);
@@ -23,10 +24,41 @@ public class HojaCalculoFrame extends JFrame {
         setLayout(new BorderLayout());
         JPanel total = new JPanel(new BorderLayout());
         JPanel rejilla = new JPanel(new GridLayout(getNumFilas(), getNumColumnas()));
-        total.add(rejilla, BorderLayout.CENTER);
-        for (int i = 0; i < getNumColumnas(); i++) {
-            JLabel num = new JLabel()
+        celdas = new JTextField[getNumFilas()][getNumColumnas()];
+        for (int i = 0; i < getNumFilas(); i++) {
+            for (int j = 0; j < getNumColumnas(); j++) {
+                celdas[i][j] = new JTextField();
+                rejilla.add(celdas[i][j]);
+            }
         }
+        int maximo = Math.max(getNumFilas(), getNumColumnas());
+
+        for (int i = 0; i < maximo; i++) {
+            if (i < getNumColumnas()) {
+                celdas[0][i].setBackground(Color.GRAY);
+            }
+
+            if (i < getNumFilas()) {
+                celdas[i][0].setBackground(Color.GRAY);
+            }
+        }
+        total.add(rejilla, BorderLayout.CENTER);
+        JPanel letras = new JPanel(new GridLayout(1, getNumColumnas()));
+        for (int i = 0; i < getNumColumnas(); i++) {
+            JLabel num = new JLabel(String.valueOf((char) (65 + i)), SwingConstants.CENTER);
+            letras.add(num);
+        }
+        total.add(letras, BorderLayout.NORTH);
+        JPanel nums = new JPanel(new GridLayout(getNumFilas(), 1));
+        for (int i = 1; i < getNumColumnas() + 1; i++) {
+            JLabel num = new JLabel(String.valueOf(i));
+            nums.add(num);
+        }
+        total.add(letras, BorderLayout.NORTH);
+        total.add(nums, BorderLayout.WEST);
+        add(total);
+        total.setVisible(true);
+        setVisible(true);
 
     }
     public int getNumFilas() {
